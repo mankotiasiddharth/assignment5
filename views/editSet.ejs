@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>EDIT SETS</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <%- include('partials/navbar', {page: '/lego/editSet' }) %>
+    <h1 class="text-2xl font-bold my-4">Edit Set: <%= set.name %></h1>
+
+<form method="POST" action="/lego/editSet">
+  <input type="hidden" name="set_num" value="<%= set.set_num %>" readonly class="cursor-not-allowed">
+  <div class="my-2">
+    <label for="name">Name</label>
+    <input type="text" name="name" value="<%= set.name %>" required />
+  </div>
+  <div class="my-2">
+    <label for="year">Year</label>
+    <input type="number" name="year" value="<%= set.year %>" required />
+  </div>
+  <div class="my-2">
+    <label for="num_parts">Number of Parts</label>
+    <input type="number" name="num_parts" value="<%= set.num_parts %>" required />
+  </div>
+  <div class="my-2">
+    <label for="img_url">Image URL</label>
+    <input type="url" name="img_url" value="<%= set.img_url %>" required />
+  </div>
+  <div class="my-2">
+    <label for="theme_id">Theme</label>
+    <select name="theme_id" required>
+      <% themes.forEach(theme => { %>
+        <option value="<%= theme.id %>" <%= (set.theme_id === theme.id) ? "selected" : "" %>><%= theme.name %></option>
+      <% }) %>
+    </select>
+  </div>
+  <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update Set</button>
+  <a href="/lego/deleteSet/<%= set.set_num %>" class="bg-red-500 text-white px-4 py-2 rounded ml-2">Delete Set</a>
+</form>
+</body>
+</html>

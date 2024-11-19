@@ -13,7 +13,7 @@
                     <a href="/lego/sets?theme=books" class="btn btn-filter">Books</a>
                 </div>
                 </p>
-                <table>
+                <table class="table-auto w-full border-separate border-spacing-2">
                     <thead>
                         <tr>
                             <th>Image</th>
@@ -32,8 +32,8 @@
                                     <%= set.name %>
                                 </td>
                                 <td>
-                                    <a href="/lego/sets?theme=<%= set.theme %>" class="btn btn-theme">
-                                        <%= set.theme %>
+                                    <a href="/lego/sets?theme=<%= set.Theme.name %>" class="btn btn-theme">
+                                        <%= set.Theme.name %>
                                     </a>
                                 </td>
                                 <td>
