@@ -1,5 +1,6 @@
 // const setData = require("../data/setData");
 // const themeData = require("../data/themeData");
+require("pg"); // explicitly require the "pg" module
 
 require("dotenv").config();
 const Sequelize = require("sequelize"); //package helps to provide functionality to work with pg database

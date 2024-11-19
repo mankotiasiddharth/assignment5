@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 2004;
 app.use(express.static("public"));
 const path = require("path");
 const { homedir } = require("os");
-
+require("pg"); // explicitly require the "pg" module
 app.use(express.urlencoded({ extended: true })); // Middleware for form data
 const { getAllThemes, addSet } = require("./modules/legoSets");
 
