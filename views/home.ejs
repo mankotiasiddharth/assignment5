@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lego Collection</title>
+  <link rel="stylesheet" href="../css/main.css">
+
+<body class="h-screen bg-red-200">
+
+  <%- include('partials/navbar',{page : '/' }) %>
+
+    <div class="hero bg-base-200 ">
+      <div class="hero-content text-center">
+        <div class="max-w-md">
+          <h1 class="text-5xl font-bold">Welcome</h1>
+          <p class="py-6">
+            Unleash your inner builder and embark on a fascinating journey through the colorful realm of Lego.
+          </p>
+          <button class="btn btn-primary rounded-md">
+            <a href="/lego/sets">Get Started Now</a></button>
+
+
+
+        </div>
+      </div>
+
+    </div>
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="card  bg-base-100 shadow-xl">
+          <figure>
+            <img class="w-full h-[300px] object-cover" src="https://cdn.rebrickable.com/media/sets/0241357594-1.jpg"
+              alt="" />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Star Wars</h2>
+            <p class="min-h-[50px]">Build Your Own Adventure: Galactic Missions,2019</p>
+            <div class="card-actions justify-end">
+              <button class="btn btn-primary"><a href="/lego/sets/0241357594-1">Buy Now</a></button>
+            </div>
+          </div>
+        </div>
+        <div class="card  bg-base-100 shadow-xl">
+          <figure>
+            <img class="w-full h-[300px] object-cover" src="https://cdn.rebrickable.com/media/sets/028-1.jpg" alt="" />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Nursery Furniture</h2>
+            <p class="min-h-[50px]">Nursery Furniture was established in year 1979.</p>
+            <div class="card-actions justify-end">
+              <button class="btn btn-primary"><a href="/lego/sets/028-1">Buy Now</a></button>
+            </div>
+          </div>
+        </div>
+        <div class="card  bg-base-100 shadow-xl">
+          <figure>
+            <img class="w-full h-[300px] object-cover" src="https://cdn.rebrickable.com/media/sets/0241357594-1.jpg"
+              alt="" />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Building Set</h2>
+            <p class="min-h-[50px]">It is a basic set established in year 1973.</p>
+            <div class="card-actions justify-end">
+              <button class="btn btn-primary"><a href="/lego/sets/030-2">Buy Now</a></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+</body>
+
+</html>

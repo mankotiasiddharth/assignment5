@@ -1,0 +1,90 @@
+[
+    {
+        "set_num": "01-1",
+        "name": "Chain Links",
+        "year": "1980",
+        "theme_id": "453",
+        "num_parts": "25",
+        "img_url": "https://cdn.rebrickable.com/media/sets/01-1.jpg"
+    },
+    {
+        "set_num": "011-1",
+        "name": "Basic Building Set",
+        "year": "1968",
+        "theme_id": "366",
+        "num_parts": "145",
+        "img_url": "https://cdn.rebrickable.com/media/sets/011-1.jpg"
+    },
+    {
+        "set_num": "01-2",
+        "name": "Bulldozer Chain Links",
+        "year": "1982",
+        "theme_id": "453",
+        "num_parts": "50",
+        "img_url": "https://cdn.rebrickable.com/media/sets/01-2.jpg"
+    },
+    {
+        "set_num": "02-1",
+        "name": "Extra Large Tires & Hubs",
+        "year": "1982",
+        "theme_id": "453",
+        "num_parts": "4",
+        "img_url": "https://cdn.rebrickable.com/media/sets/02-1.jpg"
+    },
+    {
+        "set_num": "021-1",
+        "name": "Wheel Set",
+        "year": "1966",
+        "theme_id": "366",
+        "num_parts": "183",
+        "img_url": "https://cdn.rebrickable.com/media/sets/021-1.jpg"
+    },
+    {
+        "set_num": "02-2",
+        "name": "Digger Bucket Assembly",
+        "year": "1980",
+        "theme_id": "453",
+        "num_parts": "3",
+        "img_url": "https://cdn.rebrickable.com/media/sets/02-2.jpg"
+    },
+    {
+        "set_num": "022-1",
+        "name": "Basic Building Set",
+        "year": "1968",
+        "theme_id": "366",
+        "num_parts": "110",
+        "img_url": "https://cdn.rebrickable.com/media/sets/022-1.jpg"
+    },
+    {
+        "set_num": "0241187567-1",
+        "name": "Ninjago: Build Your Own Adventure",
+        "year": "2015",
+        "theme_id": "497",
+        "num_parts": "74",
+        "img_url": "https://cdn.rebrickable.com/media/sets/0241187567-1.jpg"
+    },
+    {
+        "set_num": "0241357594-1",
+        "name": "Star Wars: Build Your Own Adventure: Galactic Missions",
+        "year": "2019",
+        "theme_id": "497",
+        "num_parts": "70",
+        "img_url": "https://cdn.rebrickable.com/media/sets/0241357594-1.jpg"
+    },
+    {
+        "set_num": "028-1",
+        "name": "Nursery Furniture",
+        "year": "1979",
+        "theme_id": "652",
+        "num_parts": "7",
+        "img_url": "https://cdn.rebrickable.com/media/sets/028-1.jpg"
+    },
+    {
+        "set_num": "030-2",
+        "name": "Building Set",
+        "year": "1973",
+        "theme_id": "505",
+        "num_parts": "29",
+        "img_url": "https://cdn.rebrickable.com/media/sets/030-2.jpg"
+    }
+]

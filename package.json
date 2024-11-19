@@ -1,0 +1,24 @@
+{
+  "name": "web_a_3",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "Kunwar Siddharth Mankotia",
+  "license": "ISC",
+  "dependencies": {
+    "@tailwindcss/typography": "^0.5.15",
+    "daisyui": "^4.12.14",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "nodemon": "^3.1.7"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.14"
+  },
+  "description": ""
+}

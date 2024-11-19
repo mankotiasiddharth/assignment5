@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lego Set Details</title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+
+<body>
+  <%- include('partials/navbar', { page: '' }) %>
+
+    <div class="hero bg-base-200 min-h-screen">
+      <div class="hero-content text-center">
+        <div class="max-w-md">
+          <h1 class="text-5xl font-bold">
+            <%= set.name %>
+          </h1> <!--name of the set -->
+          <p class="py-6">
+            Below, you will find detailed information about the set.
+          </p>
+
+          <img src="<%= set.img_url %>" alt="<%= set.name %>" class="w-full h-96 object-cover">
+          <div class="text-left mt-5">
+            <p><strong>Name:</strong>
+              <%= set.name %>
+            </p>
+            <p><strong>Theme:</strong>
+              <%= set.theme %>
+            </p>
+            <p><strong>Year:</strong>
+              <%= set.year %>
+            </p>
+            <p><strong>Number of Parts:</strong>
+              <%= set.num_parts %>
+            </p>
+          </div>
+          <div id="quote-section" class="mt-6">
+            <p id="quote-content" class="text-lg italic"></p>
+            <p id="quote-author" class="text-right font-bold"></p>
+          </div>
+
+          <a href="#" onclick="history.back(); return false;" class="btn btn-primary mt-4">Back</a>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch("https://quotable.io/random")
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById("quote-content").innerText = `"${data.content}"`;
+            document.getElementById("quote-author").innerText = `- ${data.author}`;
+          })
+          .catch(error => console.error("Error fetching quote:", error));
+      });
+    </script>
+</body>
+
+</html>
