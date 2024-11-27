@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "node --watch server.js",
     "tw:build": "tailwindcss build -i ./public/css/tailwind.css -o ./public/css/main.css"
   },
   "keywords": [],
@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@tailwindcss/typography": "^0.5.15",
+    "bcryptjs": "^2.4.3",
     "client-sessions": "^0.8.0",
     "daisyui": "^4.12.14",
     "dotenv": "^16.4.5",

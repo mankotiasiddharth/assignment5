@@ -34,12 +34,15 @@ legoData
   .then(() => {
     app.use(express.static(path.join(__dirname, "/public")));
 
+    // app.get("/", (req, res) => {
+    //   res.render("home");
+    // });
     app.get("/", (req, res) => {
-      res.render("home");
+      res.render("home", { session: req.session });
     });
     app.get("/about", (req, res) => {
       // res.sendFile(path.join(__dirname,'/public/views/about.html'))
-      res.render("about");
+      res.render("about", { session: req.session });
     });
     app.get("/lego/sets", (req, res) => {
       const { theme } = req.query;
@@ -52,20 +55,21 @@ legoData
                 message: `No sets found for theme "${theme}".`,
               });
             } else {
-              res.render("sets", { sets });
+              res.render("sets", { sets, session: req.session });
             }
             // res.json(set);
           })
           .catch((err) => {
             res.status(500).render("404", {
               message: `No sets found for theme "${theme}".`,
+              session: req.session,
             });
           });
       } else {
         legoData
           .getAllSets()
           .then((sets) => {
-            res.render("sets", { sets });
+            res.render("sets", { sets, session: req.session });
           })
           .catch((err) => {
             res.status(500).send(err);
@@ -82,14 +86,16 @@ legoData
           if (!set) {
             res.status(404).render("404", {
               message: `Lego set with number "${numId}" not found.`,
+              session: req.session,
             });
           } else {
-            res.render("set", { set });
+            res.render("set", { set, session: req.session });
           }
         })
         .catch((err) => {
           res.status(404).render("404", {
             message: `Lego set with number "${numId}" not found.`,
+            session: req.session,
           });
         });
     });
@@ -97,11 +103,12 @@ legoData
     app.get("/lego/addSet", ensureLogin, (req, res) => {
       getAllThemes()
         .then((themes) => {
-          res.render("addSet", { themes }); // Pass the themes to the view
+          res.render("addSet", { themes, session: req.session }); // Pass the themes to the view
         })
         .catch((err) => {
           res.render("500", {
             message: `I'm sorry, but we have encountered the following error: ${err}`,
+            session: req.session,
           });
         });
     });
@@ -116,6 +123,7 @@ legoData
         .catch((err) => {
           res.render("500", {
             message: `I'm sorry, but we have encountered the following error: ${err}`,
+            session: req.session,
           });
         });
     });
@@ -125,10 +133,13 @@ legoData
 
       Promise.all([legoData.getSetByNum(setNum), legoData.getAllThemes()])
         .then(([set, themes]) => {
-          res.render("editSet", { set, themes });
+          res.render("editSet", { set, themes, session: req.session });
         })
         .catch((err) => {
-          res.status(404).render("404", { message: `Error: ${err.message}` });
+          res.status(404).render("404", {
+            message: `Error: ${err.message}`,
+            session: req.session,
+          });
         });
     });
 
@@ -141,7 +152,10 @@ legoData
           res.redirect("/lego/sets");
         })
         .catch((err) => {
-          res.render("500", { message: `Error: ${err.message}` });
+          res.render("500", {
+            message: `Error: ${err.message}`,
+            session: req.session,
+          });
         });
     });
     app.get("/lego/deleteSet/:num", ensureLogin, (req, res) => {
@@ -153,7 +167,10 @@ legoData
           res.redirect("/lego/sets");
         })
         .catch((err) => {
-          res.render("500", { message: `Error: ${err.message}` });
+          res.render("500", {
+            message: `Error: ${err.message}`,
+            session: req.session,
+          });
         });
     });
 
@@ -166,12 +183,6 @@ legoData
         next();
       }
     }
-
-    app.use((req, res, next) => {
-      res.status(404).render("404", {
-        message: "I'm sorry, we're unable to find what you're looking for",
-      });
-    });
     app.use(
       clientSessions({
         cookieName: "session", // this is the object name that will be added to 'req'
@@ -183,6 +194,83 @@ legoData
     app.use((req, res, next) => {
       res.locals.session = req.session; // Pass the session object to templates
       next(); // Go to the next middleware or route
+    });
+
+    app.get("/login", (req, res) => {
+      res.render("login", {
+        userName: "",
+        session: req.session,
+        errorMessage: null,
+      }); //Shows login page
+    });
+
+    app.get("/register", (req, res) => {
+      res.render("register", {
+        userName: null,
+        errorMessage: null,
+        successMessage: null,
+        session: req.session,
+      }); // Show the register page
+    });
+
+    app.post("/register", (req, res) => {
+      authData
+        .registerUser(req.body) //calls register user function
+        .then(() => {
+          res.render("register", {
+            successMessage: "User created",
+            userName: null,
+            errorMessage: null,
+            session: req.session,
+          });
+        })
+        .catch((err) => {
+          // If there was an error, show the error message and keep the username
+          res.render("register", {
+            errorMessage: err,
+            userName: req.body.userName,
+            successMessage: null,
+            session: req.session,
+          });
+        });
+    });
+    app.post("/login", (req, res) => {
+      req.body.userAgent = req.get("User-Agent");
+
+      authData
+        .checkUser(req.body) //checking user credentials
+        .then((user) => {
+          req.session.user = {
+            //saves user info
+            userName: user.userName, // Save their username
+            email: user.email, // Save their email
+            loginHistory: user.loginHistory, // Save their login history
+          };
+          //After that send them to lego sets page
+          res.redirect("/lego/sets");
+        })
+        .catch((err) => {
+          res.render("login", {
+            errorMessage: err, // Show the error message
+            userName: req.body.userName || "", // Keep the username they entered
+            session: req.session,
+          });
+        });
+    });
+
+    app.get("/logout", (req, res) => {
+      req.session.reset();
+      res.redirect("/", { session: req.session });
+    });
+
+    app.get("/userHistory", ensureLogin, (req, res) => {
+      res.render("userHistory", { session: req.session }); // Render the userHistory view
+    });
+
+    app.use((req, res, next) => {
+      res.status(404).render("404", {
+        message: "I'm sorry, we're unable to find what you're looking for",
+      });
     });
 
     app.listen(PORT, () => {

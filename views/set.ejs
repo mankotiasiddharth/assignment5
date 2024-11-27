@@ -46,10 +46,15 @@
             <p id="quote-content" class="text-lg italic"></p>
             <p id="quote-author" class="text-right font-bold"></p>
           </div>
+          <% if (session.user) { %>
 
-          <a href="/lego/editSet/<%=set.set_num %>" class="btn btn-primary mt-4"
-            >EDIT</a
+          <a href="/lego/editSet/<%= set._id %>" class="btn btn-primary"
+            >Edit</a
           >
+          <% } %>
+          <!-- <a href="/lego/editSet/<%=set.set_num %>" class="btn btn-primary mt-4"
+            >EDIT</a
+          > -->
         </div>
       </div>
     </div>

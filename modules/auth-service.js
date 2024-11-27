@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+
 require("dotenv").config();
 let Schema = mongoose.Schema;
 
@@ -10,21 +12,6 @@ let companySchema = new mongoose.Schema({
 
 let User; // to be defined on new connection (see initialize)
 
-// function initialize() {
-//   return new Promise(function (resolve, reject) {
-//     const db = mongoose.createConnection(process.env.MONGODB); //creating a connection in mongodb
-
-//     // Handle connection errors
-//     db.on("error", (err) => {
-//       reject(err); // Reject the promise with an error if the connection fails
-//     });
-
-//     db.once("open", () => {
-//       User = db.model("users", userSchema); // Set up the User model
-//       resolve(); // Resolve the promise to indicate success
-//     });
-//   });
-// }
 const initialize = () => {
   return new Promise((resolve, reject) => {
     let db = mongoose.createConnection(process.env.MONGODB);
@@ -41,69 +28,76 @@ const initialize = () => {
 };
 function registerUser(userData) {
   return new Promise((resolve, reject) => {
-    // Step 1: Check if passwords match
+    //Check if passwords match
     if (userData.password !== userData.password2) {
-      reject("Passwords do not match"); // If not, stop here
+      reject("Passwords do not match"); // Stop if passwords don't match
       return;
     }
-    let newUser = new User({
-      userName: userData.userName,
-      password: userData.password, // This will be hashed later!
-      email: userData.email,
-      loginHistory: [], // Start with an empty login history
-    });
-    newUser
-      .save()
+
+    //Hash the password using bcrypt
+    bcrypt
+      .hash(userData.password, 10) // Hash the password with 10 salt rounds
+      .then((hashedPassword) => {
+        //Create a new user object with the hashed password
+        const newUser = new User({
+          userName: userData.userName.toLowerCase().trim(), // Normalize username
+          password: hashedPassword, // Save the hashed password
+          email: userData.email,
+          loginHistory: [], // Start with an empty login history
+        });
+
+        // Save the user to the database
+        return newUser.save();
+      })
       .then(() => {
         resolve(); // Success! User is saved
       })
       .catch((err) => {
-        // Check if it’s a "username taken" error
+        // Handle errors
         if (err.code === 11000) {
-          reject("User Name already taken");
+          reject("User Name already taken"); // Duplicate username
         } else {
-          // Other errors
-          reject(`There was an error creating the user: ${err}`);
+          reject(`There was an error creating the user: ${err}`); // Other errors
         }
+      })
+      .catch(() => {
+        reject("There was an error encrypting the password"); // Error during hashing
       });
   });
 }
+
 function checkUser(userData) {
   return new Promise((resolve, reject) => {
-    User.find({ userName: userData.userName }) //checking if the user is in the list
-      .then((users) => {
-        if (users.length === 0) {
+    User.findOne({ userName: userData.userName.toLowerCase().trim() })
+      .then((user) => {
+        if (!user) {
           reject(`Unable to find user: ${userData.userName}`);
           return;
         }
 
-        // Step 2: Check the password
-        const user = users[0];
         bcrypt
-          .compare(userData.password, user.password) // Compare entered password with saved password
+          .compare(userData.password, user.password)
           .then((isMatch) => {
             if (!isMatch) {
               reject(`Incorrect Password for user: ${userData.userName}`);
               return;
             }
 
-            //updating the detail
             if (user.loginHistory.length === 8) {
-              user.loginHistory.pop(); // Erase the oldest entry if full
+              user.loginHistory.pop(); // Remove the oldest entry
             }
 
             user.loginHistory.unshift({
-              dateTime: new Date().toString(), // Add the current time
-              userAgent: userData.userAgent, // Add info about their device
+              dateTime: new Date().toString(),
+              userAgent: userData.userAgent,
             });
 
-            //saves the updated info
             User.updateOne(
-              { userName: user.userName }, // Find the user to update
-              { $set: { loginHistory: user.loginHistory } } // Update their data
+              { userName: user.userName },
+              { $set: { loginHistory: user.loginHistory } }
             )
               .then(() => {
-                resolve(user); // Success! Let it is set and ready to go ahead
+                resolve(user);
               })
               .catch((err) => {
                 reject(`There was an error verifying the user: ${err}`);
