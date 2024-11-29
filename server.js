@@ -37,6 +37,18 @@ legoData
     // app.get("/", (req, res) => {
     //   res.render("home");
     // });
+    app.use(
+      clientSessions({
+        cookieName: "session", // this is the object name that will be added to 'req'
+        secret: "o6LjQ5EVNC28ZgK64hDELM18ScpFQr", // this should be a long un-guessable string.
+        duration: 24 * 60 * 60 * 1000,
+        activeDuration: 1000 * 60 * 5,
+      })
+    );
+    app.use((req, res, next) => {
+      res.locals.session = req.session; // Pass the session object to templates
+      next(); // Go to the next middleware or route
+    });
     app.get("/", (req, res) => {
       res.render("home", { session: req.session });
     });
@@ -175,26 +187,12 @@ legoData
     });
 
     function ensureLogin(req, res, next) {
-      if (!req.session.user) {
-        // If there's no user in the session, redirect them to the login page
-        res.redirect("/login");
+      if (req.session && req.session.user) {
+        next(); // User is logged in, proceed
       } else {
-        // If the user is logged in, continue to the next step
-        next();
+        res.redirect("/login"); // Redirect to login if not logged in
       }
     }
-    app.use(
-      clientSessions({
-        cookieName: "session", // this is the object name that will be added to 'req'
-        secret: "o6LjQ5EVNC28ZgK64hDELM18ScpFQr", // this should be a long un-guessable string.
-        duration: 24 * 60 * 60 * 1000,
-        activeDuration: 1000 * 60 * 5,
-      })
-    );
-    app.use((req, res, next) => {
-      res.locals.session = req.session; // Pass the session object to templates
-      next(); // Go to the next middleware or route
-    });
 
     app.get("/login", (req, res) => {
       res.render("login", {
@@ -259,13 +257,18 @@ legoData
     });
 
     app.get("/logout", (req, res) => {
-      req.session.reset();
-      res.redirect("/", { session: req.session });
+      req.session = null;
+      res.redirect("/");
     });
 
     app.get("/userHistory", ensureLogin, (req, res) => {
       res.render("userHistory", { session: req.session }); // Render the userHistory view
     });
+
+    // app.use((req, res, next) => {
+    //   res.locals.session = req.session;
+    //   next();
+    // });
 
     app.use((req, res, next) => {
       res.status(404).render("404", {
