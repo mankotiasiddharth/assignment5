@@ -1,18 +1,16 @@
-
-
 {
-  "version": 2,
-  "framework": null,
-  "functions": {
-    "api/server.js": {
-      "runtime": "nodejs18.x",
-      "includeFiles": ["dist/**"]
-    }
-  },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "api/server.js"
-    }
-  ]
-}
+    "version": 2,
+    "builds": [
+      {
+        "src": "server.js",
+        "use": "@vercel/node",
+        "config": { "includeFiles": ["dist/**"] }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "server.js"
+      }
+    ]
+  }
