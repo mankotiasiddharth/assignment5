@@ -49,6 +49,13 @@ legoData
       res.locals.session = req.session; // Pass the session object to templates
       next(); // Go to the next middleware or route
     });
+    function ensureLogin(req, res, next) {
+      if (req.session && req.session.user) {
+        next(); // User is logged in, proceed
+      } else {
+        res.redirect("/login"); // Redirect to login if not logged in
+      }
+    }
     app.get("/", (req, res) => {
       res.render("home", { session: req.session });
     });
@@ -186,14 +193,6 @@ legoData
         });
     });
 
-    function ensureLogin(req, res, next) {
-      if (req.session && req.session.user) {
-        next(); // User is logged in, proceed
-      } else {
-        res.redirect("/login"); // Redirect to login if not logged in
-      }
-    }
-
     app.get("/login", (req, res) => {
       res.render("login", {
         userName: "",
@@ -257,7 +256,7 @@ legoData
     });
 
     app.get("/logout", (req, res) => {
-      req.session = null;
+      req.session.reset();
       res.redirect("/");
     });
 
@@ -280,4 +279,3 @@ legoData
       console.log(`Server is running on port ${PORT}`);
     });
   });
-module.exports = app;
