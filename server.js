@@ -1,14 +1,14 @@
 /********************************************************************************
- * WEB322 – Assignment 05
+ * WEB322 – Assignment 06
  *
  * I declare that this assignment is my own work in accordance with Seneca's
  * Academic Integrity Policy:
  *
  * https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
  *
- * Name: Kunwar Siddharth Mankotia Student ID: 152030227 Date: 11/19/2024
+ * Name: Kunwar Siddharth Mankotia Student ID: 152030227 Date: 11/30/2024
  *
- * Published URL:
+ * Published URL: assignmentweb.vercel.app
  *
  ********************************************************************************/
 
